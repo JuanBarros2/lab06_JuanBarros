@@ -2,24 +2,36 @@ package centraldejogos.edu.jogo;
 
 import java.util.HashSet;
 
+import centraldejogos.edu.exceptions.ParametroInvalidoException;
+
 /**
  * @author juanvlbb
  */
 public class Jogo {
-	private String nome;
-	private double preco;
-	private int pontuacao;
-	private int quantJogadas;
-	private int vezesConcluidas;
-	private HashSet<Jogabilidade> estilos;
+	
+	protected String nome;
+	protected double preco;
+	protected int pontuacao;
+	protected int quantJogadas;
+	protected int vezesConcluidas;
+	protected HashSet<Jogabilidade> estilos;
 	
 	/**
-	 * Controi um objeto Jogo recebendo como parâmetros os valores do seu nome e preço.
+	 * Controi um objeto Jogo recebendo como parametros os valores do seu nome e preco.
 	 * @param nome 
 	 * @param preco
 	 */
-	public Jogo(String nome, double preco) {
+	public Jogo(String nome, double preco){
 		super();
+		if (nome == null){
+			throw new NullPointerException("O nome nao pode ser nulo");
+		}
+		if (nome.trim().equals("")){
+			throw new ParametroInvalidoException("O nome nao pode estar vazio");
+		}
+		if (preco < 0){
+			throw new ParametroInvalidoException("Preco nao pode ser repetido");
+		}
 		this.nome = nome;
 		this.preco = preco;
 		pontuacao = 0;
@@ -29,7 +41,7 @@ public class Jogo {
 	}
 	
 	/**
-	 * Registra avanços em pontuação e registra zeramento de jogo.
+	 * Registra avancos em pontuacao e registra zeramento de jogo.
 	 * @param jogada
 	 * @param zerou
 	 * @return
