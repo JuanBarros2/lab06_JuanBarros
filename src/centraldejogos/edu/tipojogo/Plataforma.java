@@ -1,4 +1,6 @@
-package centraldejogos.edu.jogo;
+package centraldejogos.edu.tipojogo;
+
+import centraldejogos.edu.Jogo;
 
 
 public class Plataforma extends Jogo {

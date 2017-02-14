@@ -1,11 +1,16 @@
 package centraldejogos.edu.tipousuario;
 
-public class Veterano extends PerfilFinanceiro{
+public class Veterano extends Perfil{
+
+	/**
+	 * Representa a porcentagem de desconto que aquele perfil apresenta
+	 */
+	private final int DESCONTO = 20;
 
 	@Override
 	public double calculaDesconto(double preco) {
-		// TODO Auto-generated method stub
-		return 0;
+		preco = (preco / 100) * DESCONTO;
+		return preco;
 	}
 
 }
