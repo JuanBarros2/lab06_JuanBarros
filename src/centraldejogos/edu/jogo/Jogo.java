@@ -2,38 +2,27 @@ package centraldejogos.edu.jogo;
 
 import java.util.HashSet;
 
+import centraldejogos.edu.Produto;
 import centraldejogos.edu.exceptions.ParametroInvalidoException;
 
 /**
- * @author juanvlbb
+ * Representação de um Jogo eletrônico. Um Jogo é um filho de {@link Produto}
+ * que é uma abstração de algo que pode ser comprado.
+ * @author Juan
  */
-public class Jogo {
-	
-	protected String nome;
-	protected double preco;
+public class Jogo extends Produto{
 	protected int pontuacao;
 	protected int quantJogadas;
 	protected int vezesConcluidas;
 	protected HashSet<Jogabilidade> estilos;
 	
 	/**
-	 * Controi um objeto Jogo recebendo como parametros os valores do seu nome e preco.
+	 * Inicializa os parâmetros iniciais de jogo. Aceita os parametros nome e preco do jogo.
 	 * @param nome 
 	 * @param preco
 	 */
 	public Jogo(String nome, double preco){
-		super();
-		if (nome == null){
-			throw new NullPointerException("O nome nao pode ser nulo");
-		}
-		if (nome.trim().equals("")){
-			throw new ParametroInvalidoException("O nome nao pode estar vazio");
-		}
-		if (preco < 0){
-			throw new ParametroInvalidoException("Preco nao pode ser repetido");
-		}
-		this.nome = nome;
-		this.preco = preco;
+		super(nome, preco);
 		pontuacao = 0;
 		quantJogadas = 0;
 		vezesConcluidas = 0;

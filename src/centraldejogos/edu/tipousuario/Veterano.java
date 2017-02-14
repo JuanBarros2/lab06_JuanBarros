@@ -1,6 +1,6 @@
 package centraldejogos.edu.tipousuario;
 
-public class Veterano extends TipoUsuario{
+public class Veterano extends PerfilFinanceiro{
 
 	@Override
 	public double calculaDesconto(double preco) {
