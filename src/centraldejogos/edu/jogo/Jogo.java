@@ -7,7 +7,9 @@ import centraldejogos.edu.exceptions.ParametroInvalidoException;
 
 /**
  * Representação de um Jogo eletrônico. Um Jogo é um filho de {@link Produto}
- * que é uma abstração de algo que pode ser comprado.
+ * que é uma abstração de algo que pode ser comprado. Um jogo, além de ser um 
+ * produto, ele tem comportamentos específicos para manipular pontuação e informações
+ * próprias.
  * @author Juan
  */
 public class Jogo extends Produto{
