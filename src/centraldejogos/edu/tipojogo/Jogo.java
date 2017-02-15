@@ -1,9 +1,8 @@
-package centraldejogos.edu;
+package centraldejogos.edu.tipojogo;
 
 import java.util.HashSet;
 
 import centraldejogos.edu.exceptions.ParametroInvalidoException;
-import centraldejogos.edu.tipojogo.Jogabilidade;
 
 /**
  * @author Juan

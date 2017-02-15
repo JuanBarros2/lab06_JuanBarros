@@ -1,7 +1,5 @@
 package centraldejogos.edu.tipousuario;
 
-import centraldejogos.edu.Usuario;
-
 public class Veterano extends Usuario{
 	public Veterano(String nome, String login) {
 		super(nome, login);

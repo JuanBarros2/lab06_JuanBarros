@@ -1,11 +1,11 @@
-package centraldejogos.edu;
+package centraldejogos.edu.tipousuario;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
 import centraldejogos.edu.exceptions.ParametroInvalidoException;
-import centraldejogos.edu.tipousuario.Noob;
-import centraldejogos.edu.tipousuario.Perfil;
+import centraldejogos.edu.exceptions.SaldoInsuficienteException;
+import centraldejogos.edu.tipojogo.Jogo;
 
 public abstract class Usuario {
 	protected int desconto;
@@ -15,7 +15,6 @@ public abstract class Usuario {
 	protected double saldoJogos;
 	protected int x2p;
 	
-
 	/**
 	 * Cria um novo usuário recebendo como atributo o seu nome e login.
 	 * É inicializado uma lista vazia de jogos, o saldo vazio para compra de
@@ -39,11 +38,6 @@ public abstract class Usuario {
 		this.nome = nome;
 		this.login = login;
 		jogos = new ArrayList<Jogo>();
-	}
-	
-	public double calculaDesconto(double preco) {
-		preco = (preco / 100) * desconto;
-		return preco;
 	}
 
 	public String getNome() {
@@ -87,10 +81,54 @@ public abstract class Usuario {
 		return true;
 	}
 
-	public void compraJogo(Jogo jogo){
+	@Override
+	public String toString() {
+		return "Nome = " + nome + ", Login = " + login + ", Saldo = " + saldoJogos + ", Pontos = " + x2p;
 	}
 
+	/**
+	 * Recebe um preço e calcula o seu valor retirado o desconto.
+	 * A variável desconto é utilizada para abater o resultado e é inicializada
+	 * nas classes filhas de Usuario.
+	 * @param preco - Valor a ser calculado desconto
+	 * @return preço aplicado ao desconto
+	 */
+	private double calculaPreco(double preco) {
+		preco = preco - ((preco / 100) * desconto);
+		return preco;
+	}
+	
+	/**
+	 * Adquire uma cópia do jogo passado como parâmetro. Para realizar
+	 * a compra o usuário precisa tem crédito suficiente para compra-lo.
+	 * Além disso, jogos que já foram comprados não podem ser comprados 
+	 * novamente.
+	 * @param jogo
+	 * @throws SaldoInsuficienteException
+	 */
+	public void compraJogo(Jogo jogo) throws SaldoInsuficienteException{
+		if (jogo == null){
+			throw new NullPointerException();
+		}
+		if (jogos.contains(jogo)){
+			throw new ParametroInvalidoException("Jogo ja adicionado ao usuario");
+		}
+		if (saldoJogos < calculaPreco(jogo.getPreco())){
+			throw new SaldoInsuficienteException();
+		}
+		jogos.add(jogo);
+	}
+	
+
+	/**
+	 * Adiciona uma quantidade de créditos que poderá ser usado na compra de
+	 * jogos. 
+	 * @param credito - valor em double maior que 0.
+	 */
 	public void adicionaCredito(double credito) {
+		if (credito <= 0){
+			throw new ParametroInvalidoException("Credito nao pode ser negativo");
+		}
 		saldoJogos += credito;		
 	}
 }

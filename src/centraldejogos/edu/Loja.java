@@ -3,6 +3,7 @@ package centraldejogos.edu;
 import java.util.ArrayList;
 
 import centraldejogos.edu.exceptions.UsuarioDesconhecidoException;
+import centraldejogos.edu.tipousuario.Usuario;
 
 public class Loja {
 	private ArrayList<Usuario> usuarios;

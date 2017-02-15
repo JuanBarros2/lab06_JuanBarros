@@ -5,8 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import centraldejogos.edu.Jogo;
 import centraldejogos.edu.exceptions.ParametroInvalidoException;
+import centraldejogos.edu.tipojogo.Jogo;
 
 public class JogoTest {
 	private Jogo jogo;
