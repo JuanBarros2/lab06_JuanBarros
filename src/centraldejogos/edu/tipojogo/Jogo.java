@@ -2,12 +2,13 @@ package centraldejogos.edu.tipojogo;
 
 import java.util.HashSet;
 
+import centraldejogos.edu.Jogabilidade;
 import centraldejogos.edu.exceptions.ParametroInvalidoException;
 
 /**
  * @author Juan
  */
-public class Jogo{
+public abstract class Jogo{
 	protected String nome;
 	protected double preco;
 	protected int pontuacao;
@@ -45,20 +46,12 @@ public class Jogo{
 	/**
 	 * Registra uma jogada do jogo. Uma jogada pode ser um batimento de record ou
 	 * conclusão de jogo.
-	 * @param jogada
-	 * @param concluiu
-	 * @return
+	 * @param pontuacao - valor referente ao score obtido no jogo.
+	 * @param concluiu - valor que informa se foi zerado o jogo.
+	 * @return x2p calculado de acordo com o tipo específico do jogo.
 	 */
-	public int registraJogada(int pontuacao, boolean concluiu){
-		if (this.pontuacao < pontuacao){
-			this.pontuacao = pontuacao;
-		}
-		if (concluiu){
-			vezesConcluidas++;
-		}
-		return 0;
-	}
-
+	public abstract int registraJogada(int pontuacao, boolean concluiu);
+		
 	public String getNome() {
 		return nome;
 	}

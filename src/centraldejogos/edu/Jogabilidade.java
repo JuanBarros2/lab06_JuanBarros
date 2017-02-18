@@ -1,4 +1,4 @@
-package centraldejogos.edu.tipojogo;
+package centraldejogos.edu;
 
 /**
  * O enum Jogabilidade representará o estilo do jogo.
