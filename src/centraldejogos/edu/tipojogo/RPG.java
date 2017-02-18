@@ -13,7 +13,7 @@ public class RPG extends Jogo{
 
 	@Override
 	public int registraJogada(int pontuacao, boolean concluiu){
-		quantJogadas++;
+		
 		if (pontuacao < 0 ){
 			throw new ParametroInvalidoException();
 		}
@@ -23,7 +23,17 @@ public class RPG extends Jogo{
 		if (concluiu){
 			vezesConcluidas++;
 		}
+		quantJogadas++;
 		return quantJogadas * PONT;
+	}
+	
+	@Override
+	public String toString() {
+		String ln = System.lineSeparator();
+		return nome + " - RPG:" + ln
+				+ "==> Jogou " + quantJogadas + " vez(es)" + ln
+				+ "==> Zerou " + vezesConcluidas + " vez(es)" + ln
+				+ "==> Maior score: " + pontuacao;
 	}
 
 }

@@ -72,7 +72,4 @@ public abstract class Jogo{
 		return vezesConcluidas;
 	}
 
-	
-	
-
 }

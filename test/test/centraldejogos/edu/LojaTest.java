@@ -1,4 +1,4 @@
-package test.centraldejogos.edu.jogo;
+package test.centraldejogos.edu;
 
 import static org.junit.Assert.*;
 
