@@ -15,4 +15,14 @@ public class Noob extends Usuario {
 			throw new UpgradeInvalidoException();
 		}
 	}
+
+	@Override
+	public int getDesconto() {
+		return 10;
+	}
+
+	@Override
+	public int getDeltaX2P() {
+		return 10;
+	}
 }

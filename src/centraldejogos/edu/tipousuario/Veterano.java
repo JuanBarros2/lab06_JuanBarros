@@ -13,4 +13,14 @@ public class Veterano extends Usuario{
 		throw new UpgradeInvalidoException();
 	}
 
+	@Override
+	public int getDesconto() {
+		return 20;
+	}
+
+	@Override
+	public int getDeltaX2P() {
+		return 15;
+	}
+
 }

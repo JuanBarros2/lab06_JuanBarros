@@ -8,6 +8,7 @@ import centraldejogos.edu.exceptions.UpgradeInvalidoException;
 import centraldejogos.edu.exceptions.UsuarioDesconhecidoException;
 import centraldejogos.edu.tipojogo.Jogo;
 import centraldejogos.edu.tipousuario.Usuario;
+import centraldejogos.edu.tipousuario.Veterano;
 
 public class Loja {
 	private ArrayList<Usuario> usuarios;
@@ -91,7 +92,13 @@ public class Loja {
 	public void upgradeUsuario(String login) throws UpgradeInvalidoException{
 		try {
 			Usuario usuario = encontraUsuario(login);
-			susuario.upgrade();
+			usuario.upgrade();
+			Veterano novo = new Veterano(usuario.getNome(), usuario.getLogin());
+			novo.setJogos(usuario.getJogos());
+			novo.setSaldoJogos(usuario.getSaldoJogos());
+			novo.setX2p(usuario.getX2p());
+			usuarios.remove(usuario);
+			usuarios.add(novo);
 		} catch (UsuarioDesconhecidoException  e) {
 			System.out.println(e.getMessage());
 		}

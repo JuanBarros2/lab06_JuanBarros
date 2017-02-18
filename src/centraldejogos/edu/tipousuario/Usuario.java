@@ -43,7 +43,6 @@ public abstract class Usuario {
 
 	public abstract void upgrade() throws UpgradeInvalidoException;
 
-	
 	@Override
 	public String toString() {
 		String ln = System.lineSeparator();
@@ -71,7 +70,7 @@ public abstract class Usuario {
 	 * @return preço aplicado ao desconto
 	 */
 	private double calculaPreco(double preco) {
-		preco = preco - ((preco / 100) * (tipo == TipoUsuario.NOOB ? 10 : 20));
+		preco = preco - ((preco / 100) * getDesconto());
 		return preco;
 	}
 	
@@ -93,9 +92,22 @@ public abstract class Usuario {
 		if (saldoJogos < calculaPreco(jogo.getPreco())){
 			throw new SaldoInsuficienteException();
 		}
-		x2p += (int)((tipo == TipoUsuario.NOOB ? 10 : 15) * jogo.getPreco());
+		x2p += (int)(getDeltaX2P() * jogo.getPreco());
 		jogos.add(jogo);
 	}
+	
+	/**
+	 * Retorna o percentual de desconto que o usuário tem.
+	 * @return
+	 */
+	public abstract int getDesconto();
+	
+	/**
+	 * Retorna o delta que indica a quantidade de pontos que o usuário ganha
+	 * ao comprar um jogo.
+	 * @return
+	 */
+	public abstract int getDeltaX2P();
 	
 	public void registraJogada(String nomeDoJogo, int score, boolean zerou) throws JogoNaoEncontradoException{
 		for (Jogo jogo : jogos) {
@@ -159,5 +171,29 @@ public abstract class Usuario {
 		} else if (!login.equals(other.login))
 			return false;
 		return true;
+	}
+
+	public ArrayList<Jogo> getJogos() {
+		return jogos;
+	}
+
+	public void setJogos(ArrayList<Jogo> jogos) {
+		this.jogos = jogos;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public void setLogin(String login) {
+		this.login = login;
+	}
+
+	public void setSaldoJogos(double saldoJogos) {
+		this.saldoJogos = saldoJogos;
+	}
+
+	public void setX2p(int x2p) {
+		this.x2p = x2p;
 	}
 }
