@@ -12,7 +12,7 @@ public class LutaTest {
 
 	@Before
 	public void setUp() throws Exception {
-		luta = new Luta("Battlefield", 80.99);
+		luta = new Luta("Battlefield", 80.99, null);
 	}
 
 	@Test

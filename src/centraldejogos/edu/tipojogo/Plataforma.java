@@ -1,13 +1,16 @@
 package centraldejogos.edu.tipojogo;
 
+import java.util.HashSet;
+
+import centraldejogos.edu.Jogabilidade;
 import centraldejogos.edu.exceptions.ParametroInvalidoException;
 
 public class Plataforma extends Jogo {
 	// Representa o valor a ser multiplicado pelas vezes concluídas
 	private final int PONT = 20;
 
-	public Plataforma(String nome, double preco) {
-		super(nome, preco);
+	public Plataforma(String nome, double preco, HashSet<Jogabilidade> estilos) {
+		super(nome, preco, estilos);
 	}
 
 	@Override

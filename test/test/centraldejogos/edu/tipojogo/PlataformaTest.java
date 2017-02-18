@@ -13,7 +13,7 @@ public class PlataformaTest {
 
 	@Before
 	public void setUp() throws Exception {
-		plataforma = new Plataforma("Super Mario", 80.99);
+		plataforma = new Plataforma("Super Mario", 80.99, null);
 	}
 
 	@Test

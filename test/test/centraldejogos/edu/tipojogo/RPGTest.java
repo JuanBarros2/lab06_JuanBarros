@@ -12,7 +12,7 @@ public class RPGTest {
 
 	@Before
 	public void setUp() throws Exception {
-		rpg = new RPG("Super Mario", 80.99);
+		rpg = new RPG("Super Mario", 80.99, null);
 	}
 
 	@Test

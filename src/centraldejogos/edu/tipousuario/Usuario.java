@@ -57,7 +57,7 @@ public abstract class Usuario {
 			gasto += jogo.getPreco();
 		}
 		NumberFormat nf = NumberFormat.getCurrencyInstance();
-		result.append("Total de preco dos jogos: R$ " + nf.format(gasto) + ln);
+		result.append("Total de preco dos jogos: " + nf.format(gasto) + ln);
 		result.append("--------------------------------------------");
 		return result.toString();
 	}
@@ -84,16 +84,18 @@ public abstract class Usuario {
 	 */
 	public void compraJogo(Jogo jogo) throws SaldoInsuficienteException{
 		if (jogo == null){
-			throw new NullPointerException();
+			throw new NullPointerException("Jogo nao pode ser nulo");
 		}
 		if (jogos.contains(jogo)){
 			throw new ParametroInvalidoException("Jogo ja adicionado ao usuario");
 		}
-		if (saldoJogos < calculaPreco(jogo.getPreco())){
+		double valorTotal = calculaPreco(jogo.getPreco());
+		if (saldoJogos < valorTotal){
 			throw new SaldoInsuficienteException();
 		}
 		x2p += (int)(getDeltaX2P() * jogo.getPreco());
 		jogos.add(jogo);
+		saldoJogos -= valorTotal;
 	}
 	
 	/**
@@ -162,7 +164,11 @@ public abstract class Usuario {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		/*Nesse caso, usei o instanceof pois não pode haver repetições na minha
+		 * lista de usuários. Dessa forma, não podemos ter um usuario noob e veterano
+		 * com o mesmo login.
+		 */
+		if (!(this instanceof Usuario))
 			return false;
 		Usuario other = (Usuario) obj;
 		if (login == null) {

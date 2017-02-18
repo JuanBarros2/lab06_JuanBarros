@@ -2,12 +2,16 @@ package centraldejogos.edu.tipojogo;
 
 import centraldejogos.edu.exceptions.ParametroInvalidoException;
 
+import java.util.HashSet;
+
+import centraldejogos.edu.Jogabilidade;
+
 public class Luta extends Jogo{
 	//Representa a pontuação máxima que pode ser alcançada
 	private final int MAX = 100000;
 
-	public Luta(String nome, double preco) {
-		super(nome, preco);
+	public Luta(String nome, double preco, HashSet<Jogabilidade> estilo) {
+		super(nome, preco, estilo);
 	}
 
 	@Override

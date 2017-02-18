@@ -24,7 +24,7 @@ public abstract class Jogo{
 	 * @param nome - É verificado se o parâmetro é nulo ou vazio
 	 * @param preco - É verificado se é menor que 0
 	 */
-	public Jogo(String nome, double preco){
+	public Jogo(String nome, double preco, HashSet<Jogabilidade> jogabilidade){
 		if (nome == null){
 			throw new NullPointerException("O nome nao pode ser nulo");
 		}
@@ -32,7 +32,10 @@ public abstract class Jogo{
 			throw new ParametroInvalidoException("O nome nao pode estar vazio");
 		}
 		if (preco < 0){
-			throw new ParametroInvalidoException("Preco nao pode ser repetido");
+			throw new ParametroInvalidoException("Preco nao pode ser negativo");
+		}
+		if (jogabilidade == null){
+			jogabilidade = new HashSet<Jogabilidade>();
 		}
 		
 		this.nome = nome;
@@ -40,7 +43,7 @@ public abstract class Jogo{
 		pontuacao = 0;
 		quantJogadas = 0;
 		vezesConcluidas = 0;
-		estilos = new HashSet<Jogabilidade>();
+		estilos = jogabilidade;
 	}
 	
 	/**
@@ -70,6 +73,71 @@ public abstract class Jogo{
 
 	public int getVezesConcluidas() {
 		return vezesConcluidas;
+	}
+
+	public void setQuantJogadas(int quantJogadas) {
+		this.quantJogadas = quantJogadas;
+	}
+
+	public HashSet<Jogabilidade> getEstilos() {
+		return estilos;
+	}
+
+	public void setEstilos(HashSet<Jogabilidade> estilos) {
+		this.estilos = estilos;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public void setPreco(double preco) {
+		this.preco = preco;
+	}
+
+	public void setPontuacao(int pontuacao) {
+		this.pontuacao = pontuacao;
+	}
+
+	public void setVezesConcluidas(int vezesConcluidas) {
+		this.vezesConcluidas = vezesConcluidas;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((estilos == null) ? 0 : estilos.hashCode());
+		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Jogo other = (Jogo) obj;
+		if (estilos == null) {
+			if (other.estilos != null)
+				return false;
+		} else if (!estilos.equals(other.estilos))
+			return false;
+		if (nome == null) {
+			if (other.nome != null)
+				return false;
+		} else if (!nome.equals(other.nome))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Jogo [nome=" + nome + ", preco=" + preco + ", pontuacao=" + pontuacao + ", quantJogadas=" + quantJogadas
+				+ ", vezesConcluidas=" + vezesConcluidas + ", estilos=" + estilos + "]";
 	}
 
 }

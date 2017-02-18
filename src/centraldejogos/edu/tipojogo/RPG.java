@@ -1,5 +1,8 @@
 package centraldejogos.edu.tipojogo;
 
+import java.util.HashSet;
+
+import centraldejogos.edu.Jogabilidade;
 import centraldejogos.edu.exceptions.ParametroInvalidoException;
 
 public class RPG extends Jogo{
@@ -7,8 +10,8 @@ public class RPG extends Jogo{
 	//Quantidade que multiplica a quantidade de jogadas para geração do X2P
 	private final int PONT = 10;
 
-	public RPG(String nome, double preco) {
-		super(nome, preco);
+	public RPG(String nome, double preco,  HashSet<Jogabilidade> estilos) {
+		super(nome, preco, estilos);
 	}
 
 	@Override
