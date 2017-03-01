@@ -153,11 +153,11 @@ public class UsuarioTest {
 			fail();
 		};
 		try {
-			usuario.registraJogada(jogo.getNome(), 111, false);
+			usuario.recompensar(jogo.getNome(), 111, false);
 			assertEquals(usuario.getX2p(), 10);
-			usuario.registraJogada(jogo.getNome(), 200, false);
+			usuario.recompensar(jogo.getNome(), 200, false);
 			assertEquals(usuario.getX2p(), 30);
-			usuario.registraJogada(jogo.getNome(), 111, true);
+			usuario.recompensar(jogo.getNome(), 111, true);
 			assertEquals(usuario.getX2p(), 60);
 		} catch (JogoNaoEncontradoException e) {
 			fail(e.getMessage());

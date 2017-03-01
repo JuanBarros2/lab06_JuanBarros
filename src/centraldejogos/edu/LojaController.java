@@ -116,7 +116,7 @@ public class LojaController {
 	public Jogo criaJogo(String nome, double preco, HashSet<Jogabilidade> estilos, TipoJogo tipo){
 		return jogoFabrica.criaJogo(nome, preco, estilos, tipo);
 	}
-
+	
  	public ArrayList<Usuario> getUsuarios() {
 		return usuarios;
 	}

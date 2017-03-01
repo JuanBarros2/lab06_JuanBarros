@@ -13,7 +13,7 @@ import centraldejogos.edu.tipojogo.Jogo;
 public abstract class Usuario {
 	private String nome;
 	private String login;
-	private ArrayList<Jogo> jogos;
+	protected ArrayList<Jogo> jogos;
 	private double saldoJogos;
 	protected int x2p;
 
@@ -121,15 +121,10 @@ public abstract class Usuario {
 	 * @throws JogoNaoEncontradoException - Se não encontrado o Jogo, o método lança
 	 * a exception
 	 */
-	public void registraJogada(String nomeDoJogo, int score, boolean zerou) throws JogoNaoEncontradoException{
-		for (Jogo jogo : jogos) {
-			if (jogo.getNome().equals(nomeDoJogo)){
-				x2p += jogo.registraJogada(score, zerou);
-				return;
-			}
-		}
-		throw new JogoNaoEncontradoException();
-	}
+	public abstract void recompensar(String nomeDoJogo, int score, boolean zerou) throws JogoNaoEncontradoException;
+
+	
+	public abstract void pubir(String nomeJogo, int scoreObtido, boolean zerou) throws JogoNaoEncontradoException;	
 	
 	/**
 	 * Adiciona uma quantidade de créditos que poderá ser usado na compra de

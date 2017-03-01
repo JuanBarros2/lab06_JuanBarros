@@ -30,7 +30,7 @@ public class NoobTest {
 		}// Tenta dar upgrade sem pontos suficientes 
 		
 		try{
-			usuario.registraJogada("DST", 100, false);
+			usuario.recompensar("DST", 100, false);
 			assertEquals(usuario.getX2p(), 1000);
 			usuario.upgrade();
 		} catch (JogoNaoEncontradoException e) {
