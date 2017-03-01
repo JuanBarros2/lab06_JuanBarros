@@ -27,7 +27,7 @@ public class NoobTest {
 			usuario.upgrade();
 		} catch (UpgradeInvalidoException e) {
 			assertEquals(e.getMessage(), "O usuario ja eh veterano ou nao possui pontos suficientes");
-		} 
+		}// Tenta dar upgrade sem pontos suficientes 
 		
 		try{
 			usuario.registraJogada("DST", 100, false);
@@ -37,7 +37,7 @@ public class NoobTest {
 			fail("Jogo nao encontrado");
 		} catch (UpgradeInvalidoException e) {
 			fail(e.getMessage());
-		}
+		}// Tenta dar upgrade com pontos suficientes
 	}
 
 }

@@ -1,22 +1,34 @@
 package centraldejogos.edu;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 
+import centraldejogos.edu.exceptions.LojaException;
 import centraldejogos.edu.exceptions.ParametroInvalidoException;
 import centraldejogos.edu.exceptions.SaldoInsuficienteException;
 import centraldejogos.edu.exceptions.UpgradeInvalidoException;
 import centraldejogos.edu.exceptions.UsuarioDesconhecidoException;
+import centraldejogos.edu.factory.JogoFactory;
+import centraldejogos.edu.factory.UsuarioFactory;
 import centraldejogos.edu.tipojogo.Jogo;
+import centraldejogos.edu.tipojogo.TipoJogo;
+import centraldejogos.edu.tipousuario.TipoUsuario;
 import centraldejogos.edu.tipousuario.Usuario;
 import centraldejogos.edu.tipousuario.Veterano;
 
-public class Loja {
+public class LojaController {
 	private final String LN = System.lineSeparator();
 	private ArrayList<Usuario> usuarios;
+	private ArrayList<Jogo> jogos;
+	private JogoFactory jogoFabrica; 
+	private UsuarioFactory usuarioFabrica;
 	
-	public Loja(){
+	public LojaController(){
 		usuarios = new ArrayList<Usuario>();
+		jogoFabrica = new JogoFactory();
+		usuarioFabrica = new UsuarioFactory();
+		jogos = new ArrayList<Jogo>();
 	}
 	
 	/**
@@ -26,14 +38,15 @@ public class Loja {
 	 * que podem ser gastos na compra de jogos.
 	 * @param login - identificador do usuário
 	 * @param credito - valor a ser adicionado
+	 * @throws LojaException 
 	 */
-	public void adicionaCredito(String login, double credito){
+	public void adicionaCredito(String login, double credito) throws LojaException{
 		Usuario usuario = null;
 		try {
 			usuario = encontraUsuario(login);
 			usuario.adicionaCredito(credito);
 		} catch (UsuarioDesconhecidoException | ParametroInvalidoException e) {
-			System.out.println(e.getMessage());
+			throw new LojaException(e.getMessage(), e);
 		}
 		
 	}
@@ -43,17 +56,14 @@ public class Loja {
 	 * Se o usuário já estiver na lista, a ação é desconsiderada.
 	 * @param usuario
 	 */
-	public void adicionaUsuario(Usuario usuario){
-		if (usuario == null){
-			System.out.println("Erro: usuario nulo.");
-			return;
-		}
+	public void adicionaUsuario(String nome, String login){
+		Usuario usuario = usuarioFabrica.criaUsuario(nome, login, TipoUsuario.NOOB);
 		if (usuarios.contains(usuario)){
 			System.out.println("Ja existe um usuario com essas caracteristicas");
 			return;
 		}
 		usuarios.add(usuario);
-	}
+	}	
 	
 	/**
 	 * Encontra um usuário na lista de usuários disponíveis de acordo com o login passado.
@@ -76,9 +86,8 @@ public class Loja {
 	public void imprimeUsuarios(){
 		System.out.println(this.toString());
 	}
-	
 
-	public void upgradeUsuario(String login) throws UpgradeInvalidoException{
+	public void upgradeUsuario(String login) throws LojaException{
 		try {
 			Usuario usuario = encontraUsuario(login);
 			usuario.upgrade();
@@ -88,22 +97,27 @@ public class Loja {
 			novo.setX2p(usuario.getX2p());
 			usuarios.remove(usuario);
 			usuarios.add(novo);
-		} catch (UsuarioDesconhecidoException  e) {
-			System.out.println(e.getMessage());
+		} catch (UsuarioDesconhecidoException | UpgradeInvalidoException e) {
+			throw new LojaException(e.getMessage(), e);
 		}
 		
 	}
 
-	public void vendeJogo(String login, Jogo jogo){
+	public void vendeJogo(String login, String nome, double preco, HashSet<Jogabilidade> estilos, TipoJogo tipo) throws LojaException{
+		Jogo jogo = jogoFabrica.criaJogo(nome, preco, estilos, tipo);
 		try {
 			Usuario usuario = encontraUsuario(login);
 			usuario.compraJogo(jogo);
 		} catch (UsuarioDesconhecidoException | SaldoInsuficienteException | ParametroInvalidoException e) {
-			System.out.println(e.getMessage());
+			throw new LojaException(e.getMessage(), e);
 		}
 	}
+	
+	public Jogo criaJogo(String nome, double preco, HashSet<Jogabilidade> estilos, TipoJogo tipo){
+		return jogoFabrica.criaJogo(nome, preco, estilos, tipo);
+	}
 
-	public ArrayList<Usuario> getUsuarios() {
+ 	public ArrayList<Usuario> getUsuarios() {
 		return usuarios;
 	}
 
@@ -122,5 +136,30 @@ public class Loja {
 			result.append(usuario + LN);
 		}
 		return result.toString();
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((usuarios == null) ? 0 : usuarios.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		LojaController other = (LojaController) obj;
+		if (usuarios == null) {
+			if (other.usuarios != null)
+				return false;
+		} else if (!usuarios.equals(other.usuarios))
+			return false;
+		return true;
 	}
 }

@@ -111,6 +111,16 @@ public abstract class Usuario {
 	 */
 	public abstract int getDeltaX2P();
 	
+	/**
+	 * Recebe como parâmetro o nome do jogo e efetua uma jogada naquele jogo.
+	 * Primeiro é tentado encontrar o jogo pelo seu nome, se encontrado, é registrado
+	 * a jogada e é guardado o X2P do usuário atualizado.
+	 * @param nomeDoJogo - Jogo a ser pesquisado
+	 * @param score - Pontuação a ser creditada
+	 * @param zerou - Representa se o usuario concluiu o jogo
+	 * @throws JogoNaoEncontradoException - Se não encontrado o Jogo, o método lança
+	 * a exception
+	 */
 	public void registraJogada(String nomeDoJogo, int score, boolean zerou) throws JogoNaoEncontradoException{
 		for (Jogo jogo : jogos) {
 			if (jogo.getNome().equals(nomeDoJogo)){
@@ -132,7 +142,6 @@ public abstract class Usuario {
 		}
 		saldoJogos += credito;		
 	}
-
 
 	public String getNome() {
 		return nome;

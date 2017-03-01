@@ -28,7 +28,7 @@ public class VeteranoTest {
 			usuario.upgrade();
 		} catch (UpgradeInvalidoException e) {
 			assertEquals(e.getMessage(), "O usuario ja eh veterano ou nao possui pontos suficientes");
-		} 
+		} //Tenta dar upgrade em usuario veterano com pontos acima de 1000
 		
 		try{
 			usuario.setX2p(0);
@@ -36,7 +36,7 @@ public class VeteranoTest {
 			fail("Veterano atualizado");
 		} catch (UpgradeInvalidoException e) {
 			assertEquals("O usuario ja eh veterano ou nao possui pontos suficientes", e.getMessage());
-		}
+		}// Tenta dar upgrade em usuario veterano com pouco x2p
 	}
 	
 	@Test

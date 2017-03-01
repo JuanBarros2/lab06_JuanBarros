@@ -7,6 +7,7 @@ import java.text.NumberFormat;
 import org.junit.Before;
 import org.junit.Test;
 
+import centraldejogos.edu.exceptions.JogoNaoEncontradoException;
 import centraldejogos.edu.exceptions.ParametroInvalidoException;
 import centraldejogos.edu.exceptions.SaldoInsuficienteException;
 import centraldejogos.edu.tipojogo.Jogo;
@@ -17,6 +18,7 @@ import centraldejogos.edu.tipousuario.Veterano;
 
 public class UsuarioTest {
 	private Usuario usuario;
+	
 
 	@Before
 	public void setUp() throws Exception {
@@ -67,7 +69,7 @@ public class UsuarioTest {
 			fail();
 		}catch(Exception e){
 			assertEquals("Jogo nao pode ser nulo", e.getMessage());
-		}
+		}// Testa jogo nulo
 		
 		Jogo jogo = new RPG("DST", 30, null);
 		usuario.adicionaCredito(100);
@@ -82,6 +84,7 @@ public class UsuarioTest {
 			fail();
 		}
 		assertEquals(usuario.getX2p(), 300);
+		//Tenta adicionar jogo já existente
 		
 		jogo = new RPG("DS", 90, null);
 		try {
@@ -91,6 +94,8 @@ public class UsuarioTest {
 			assertEquals("Saldo insuficiente", e.getMessage());
 		}
 		assertEquals(73, usuario.getSaldoJogos(), 0.001);
+		//Tenta comprar jogo sem crédito suficiente
+		
 		jogo.setPreco(80);
 		try {
 			usuario.compraJogo(jogo);
@@ -99,6 +104,7 @@ public class UsuarioTest {
 		}
 		assertEquals(usuario.getX2p(), 1100);
 		assertEquals(1, usuario.getSaldoJogos(), 0.001);
+		//Verifica a quantidade de X2P gerado
 		
 		
 	}
@@ -109,21 +115,24 @@ public class UsuarioTest {
 		assertEquals(100, usuario.getSaldoJogos(), 0.0001);
 		usuario.adicionaCredito(2000);
 		assertEquals(2100, usuario.getSaldoJogos(), 0.0001);
+		//Certifica que está adicionando os creditos corretamente
+		
 		try {
 			usuario.compraJogo(new RPG("DST", 2100, null));
 		} catch (SaldoInsuficienteException e) {
 			fail(e.getMessage());
 		}
-		assertEquals(210, usuario.getSaldoJogos(), 0.0001);
+		assertEquals(210, usuario.getSaldoJogos(), 0.0001);		
 		usuario.adicionaCredito(2000);
 		assertEquals(2210, usuario.getSaldoJogos(), 0.0001);
+		//Testa se está inserindo crédito depois de comprar
+		
 		try {
 			usuario.adicionaCredito(0);
 			fail("Credito invalido");
 		} catch (Exception e) {
 			assertEquals("Credito nao pode ser negativo", e.getMessage());
 		}
-		
 		assertEquals(2210, usuario.getSaldoJogos(), 0.0001);
 		try {
 			usuario.adicionaCredito(-1);
@@ -132,14 +141,36 @@ public class UsuarioTest {
 			assertEquals("Credito nao pode ser negativo", e.getMessage());
 		}
 		assertEquals(2210, usuario.getSaldoJogos(), 0.0001);
+		//Certifica que não aceite valores invalidos
 	}
 
+	@Test 
+	public void testRegistraJogada(){
+		Jogo jogo = new RPG("DST", 0, null);
+		try {
+			usuario.compraJogo(jogo);
+		} catch (SaldoInsuficienteException e) {
+			fail();
+		};
+		try {
+			usuario.registraJogada(jogo.getNome(), 111, false);
+			assertEquals(usuario.getX2p(), 10);
+			usuario.registraJogada(jogo.getNome(), 200, false);
+			assertEquals(usuario.getX2p(), 30);
+			usuario.registraJogada(jogo.getNome(), 111, true);
+			assertEquals(usuario.getX2p(), 60);
+		} catch (JogoNaoEncontradoException e) {
+			fail(e.getMessage());
+		}//Testa a quantidade de X2P adicionado;
+		
+	}
+	
 	@Test
 	public void testEqualsObject() {
-		Usuario user = new Noob("sa","juan");
+		Usuario user = new Noob("sa", "juan");
 		assertTrue(usuario.equals(user));
-		assertFalse(usuario.equals(new Veterano("sa","j")));
-		assertTrue(usuario.equals(new Veterano("sa","juan")));
+		assertFalse(usuario.equals(new Veterano("sa", "j")));
+		assertTrue(usuario.equals(new Veterano("sa", "juan")));
 	}
 	
 	@Test
@@ -150,8 +181,8 @@ public class UsuarioTest {
 				"Lista de Jogos:" +
 		"Total de preco dos jogos: R$ 0,00" + ln +
 		"--------------------------------------------";
-		
 		assertEquals(result,usuario.toString());
+		//Caso não tenha jogos
 		
 		
 		usuario.adicionaCredito(100);
@@ -167,6 +198,7 @@ public class UsuarioTest {
 				" + " + rpg + ln +
 		"Total de preco dos jogos: R$ 90,00" + ln +
 		"--------------------------------------------";
+		//Caso tenha 1 jogo
 		
 		rpg = new RPG("DS", 10, null);
 		try {
@@ -181,6 +213,7 @@ public class UsuarioTest {
 				" + " + rpg + ln +
 		"Total de preco dos jogos: R$ 99,00" + ln +
 		"--------------------------------------------";
+		//Caso tenha N jogos
 	}
 
 }

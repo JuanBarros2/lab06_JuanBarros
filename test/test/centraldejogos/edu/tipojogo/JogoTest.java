@@ -20,20 +20,27 @@ public class JogoTest {
 	}
 
 	@Test
+	public void testEquals(){
+		assertTrue(jogo.equals(new RPG("R", 12, null)));
+		assertFalse(jogo.equals(new Plataforma("R", 12, null)));
+		assertFalse(jogo.equals(new RPG("Rs", 12, null)));
+		assertFalse(jogo.equals(new Plataforma("S", 10, null)));
+		assertFalse(jogo.equals(new RPG("r", 10, null)));
+	}
+	
+	@Test
 	public void testJogo() {
 		HashSet<Jogabilidade> estilos = new HashSet<Jogabilidade>();
 		estilos.add(Jogabilidade.ONLINE);
 		estilos.add(Jogabilidade.MULTIPLAYER);
 		estilos.add(Jogabilidade.COMPETITIVO);
 		estilos.add(Jogabilidade.ONLINE);
-		
 		assertEquals(estilos.size(), 3);
-		
 		try{
 			jogo = new RPG("", 1, estilos);
 			fail("Nome vazio");
 		} catch(Exception e){
-			assertEquals(e.getMessage(),"O nome nao pode estar vazio");
+			assertEquals(e.getMessage(), "O nome nao pode estar vazio");
 		}
 		
 		try{
@@ -71,14 +78,6 @@ public class JogoTest {
 		assertEquals(jogo.getQuant_jogadas(), 0);
 		assertEquals(jogo.getVezesConcluidas(),0);
 		assertEquals(jogo.getEstilos(), estilos);
-	}
-	
-	@Test
-	public void testEquals(){
-		assertTrue(jogo.equals(new RPG("R", 12, null)));
-		assertFalse(jogo.equals(new Plataforma("R", 12, null)));
-		assertFalse(jogo.equals(new RPG("Rs", 12, null)));
-		assertFalse(jogo.equals(new Plataforma("S", 10, null)));
-		assertFalse(jogo.equals(new RPG("r", 10, null)));
+		//Verifica se o jogo foi inicializado adequadamente
 	}
 }
