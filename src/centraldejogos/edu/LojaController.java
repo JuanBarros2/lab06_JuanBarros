@@ -13,7 +13,7 @@ import centraldejogos.edu.factory.JogoFactory;
 import centraldejogos.edu.factory.UsuarioFactory;
 import centraldejogos.edu.tipojogo.Jogo;
 import centraldejogos.edu.tipojogo.TipoJogo;
-import centraldejogos.edu.tipousuario.TipoUsuario;
+import centraldejogos.edu.tipousuario.TipoUsuarioEnum;
 import centraldejogos.edu.tipousuario.Usuario;
 import centraldejogos.edu.tipousuario.Veterano;
 
@@ -57,7 +57,7 @@ public class LojaController {
 	 * @param usuario
 	 */
 	public void adicionaUsuario(String nome, String login){
-		Usuario usuario = usuarioFabrica.criaUsuario(nome, login, TipoUsuario.NOOB);
+		Usuario usuario = usuarioFabrica.criaUsuario(nome, login, TipoUsuarioEnum.NOOB);
 		if (usuarios.contains(usuario)){
 			System.out.println("Ja existe um usuario com essas caracteristicas");
 			return;
@@ -91,16 +91,9 @@ public class LojaController {
 		try {
 			Usuario usuario = encontraUsuario(login);
 			usuario.upgrade();
-			Veterano novo = new Veterano(usuario.getNome(), usuario.getLogin());
-			novo.setJogos(usuario.getJogos());
-			novo.setSaldoJogos(usuario.getSaldoJogos());
-			novo.setX2p(usuario.getX2p());
-			usuarios.remove(usuario);
-			usuarios.add(novo);
 		} catch (UsuarioDesconhecidoException | UpgradeInvalidoException e) {
 			throw new LojaException(e.getMessage(), e);
 		}
-		
 	}
 
 	public void vendeJogo(String login, String nome, double preco, HashSet<Jogabilidade> estilos, TipoJogo tipo) throws LojaException{

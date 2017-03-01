@@ -10,12 +10,13 @@ import centraldejogos.edu.exceptions.SaldoInsuficienteException;
 import centraldejogos.edu.exceptions.UpgradeInvalidoException;
 import centraldejogos.edu.tipojogo.Jogo;
 
-public abstract class Usuario {
+public class Usuario {
 	private String nome;
 	private String login;
-	protected ArrayList<Jogo> jogos;
+	private ArrayList<Jogo> jogos;
 	private double saldoJogos;
 	protected int x2p;
+	private TipoDeUsuarioIF statusUsuario;
 
 	/**
 	 * Cria um novo usuário recebendo como atributo o seu nome e login.
@@ -23,7 +24,7 @@ public abstract class Usuario {
 	 * jogos, o tipo é inicializado com Noob e a pontuação inicial é 0.
 	 * @param nome
 	 */
-	public Usuario(String nome, String login) {
+	public Usuario(String nome, String login, TipoDeUsuarioIF statusUsuario) {
 		if (nome == null){
 			throw new NullPointerException("Nome nao pode ser nulo");
 		}
@@ -39,9 +40,9 @@ public abstract class Usuario {
 		this.nome = nome;
 		this.login = login;
 		jogos = new ArrayList<Jogo>();
+		this.statusUsuario = statusUsuario;
 	}
 
-	public abstract void upgrade() throws UpgradeInvalidoException;
 
 	@Override
 	public String toString() {
@@ -49,7 +50,7 @@ public abstract class Usuario {
 		
 		//Otimiza a indezação de novas posições na String
 		StringBuilder result = new StringBuilder();
-		result.append(login + ln + nome + " - Jogador " + (this.getClass() == Noob.class ? "Noob" : "Veterano")
+		result.append(login + ln + nome + " - Jogador " + statusUsuario.toString()
 				+ ln + "Lista de Jogos:");
 		double gasto = 0;
 		for (Jogo jogo : jogos) {
@@ -70,7 +71,7 @@ public abstract class Usuario {
 	 * @return preço aplicado ao desconto
 	 */
 	private double calculaPreco(double preco) {
-		preco = preco - ((preco / 100) * getDesconto());
+		preco = preco - ((preco / 100) * statusUsuario.getDesconto());
 		return preco;
 	}
 	
@@ -93,38 +94,11 @@ public abstract class Usuario {
 		if (saldoJogos < valorTotal){
 			throw new SaldoInsuficienteException();
 		}
-		x2p += (int)(getDeltaX2P() * jogo.getPreco());
+		x2p += (int)(statusUsuario.getDeltaX2P() * jogo.getPreco());
 		jogos.add(jogo);
 		saldoJogos -= valorTotal;
 	}
 	
-	/**
-	 * Retorna o percentual de desconto que o usuário tem.
-	 * @return
-	 */
-	public abstract int getDesconto();
-	
-	/**
-	 * Retorna o delta que indica a quantidade de pontos que o usuário ganha
-	 * ao comprar um jogo.
-	 * @return
-	 */
-	public abstract int getDeltaX2P();
-	
-	/**
-	 * Recebe como parâmetro o nome do jogo e efetua uma jogada naquele jogo.
-	 * Primeiro é tentado encontrar o jogo pelo seu nome, se encontrado, é registrado
-	 * a jogada e é guardado o X2P do usuário atualizado.
-	 * @param nomeDoJogo - Jogo a ser pesquisado
-	 * @param score - Pontuação a ser creditada
-	 * @param zerou - Representa se o usuario concluiu o jogo
-	 * @throws JogoNaoEncontradoException - Se não encontrado o Jogo, o método lança
-	 * a exception
-	 */
-	public abstract void recompensar(String nomeDoJogo, int score, boolean zerou) throws JogoNaoEncontradoException;
-
-	
-	public abstract void pubir(String nomeJogo, int scoreObtido, boolean zerou) throws JogoNaoEncontradoException;	
 	
 	/**
 	 * Adiciona uma quantidade de créditos que poderá ser usado na compra de
@@ -205,5 +179,48 @@ public abstract class Usuario {
 
 	public void setX2p(int x2p) {
 		this.x2p = x2p;
+	}
+
+
+	
+	public void upgrade() throws UpgradeInvalidoException{
+		if(!statusUsuario.upgrade(x2p)){
+			throw new UpgradeInvalidoException();
+		} else{
+			statusUsuario = new Veterano();
+		}
+	}
+
+
+	
+	public void punir(String nomeJogo, int scoreObtido, boolean zerou) throws JogoNaoEncontradoException  {
+		for (Jogo jogo : jogos) {
+			if (jogo.getNome().equals(nomeJogo)) {
+				x2p += statusUsuario.punir(jogo, scoreObtido, zerou);
+				if (x2p < 1000){
+					statusUsuario = new Noob();
+				}
+				return;
+			}
+		}
+		throw new JogoNaoEncontradoException();
+		
+	}
+
+
+	
+	public void recompensar(String nomeJogo, int scoreObtido, boolean zerou) throws JogoNaoEncontradoException {
+		for (Jogo jogo : jogos) {
+			if (jogo.getNome().equals(nomeJogo)) {
+				x2p += statusUsuario.recompensar(jogo, scoreObtido, zerou);
+				return;
+			}
+		}
+		throw new JogoNaoEncontradoException();
+	}
+
+
+	public TipoDeUsuarioIF getStatusUsuario() {
+		return statusUsuario;
 	}
 }

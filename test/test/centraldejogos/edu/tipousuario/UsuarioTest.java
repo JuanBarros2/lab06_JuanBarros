@@ -22,40 +22,40 @@ public class UsuarioTest {
 
 	@Before
 	public void setUp() throws Exception {
-		usuario = new Noob("Juan", "juan");
+		usuario = new Usuario("Juan", "juan", new Noob());
 	}
 
 	@Test
 	public void testUsuario() {
 		try{
-			usuario = new Noob("", "juan");
+			usuario = new Usuario("", "juan", new Noob());
 			fail("Usuario com nome vazio");
 		}catch(Exception e){
 			assertEquals("Nome invalido", e.getMessage());
 		}
 		
 		try{
-			usuario = new Noob(null, "juan");
+			usuario = new Usuario(null, "juan", new Noob());
 			fail("Usuario com nome nulo");
 		}catch(Exception e){
 			assertEquals("Nome nao pode ser nulo", e.getMessage());
 		}
 
 		try{
-			usuario = new Noob("Juan", "");
+			usuario = new Usuario("Juan", "", new Noob());
 			fail("Usuario com login vazio");
 		}catch(Exception e){
 			assertEquals("Login invalido", e.getMessage());
 		}
 
 		try{
-			usuario = new Noob("Juan", null);
+			usuario = new Usuario("Juan", null, new Noob());
 			fail("Usuario com login nulo");
 		}catch(Exception e){
 			assertEquals("Login nao pode ser nulo", e.getMessage());
 		}
 		
-		usuario = new Noob("Juan", "juan");
+		usuario = new Usuario("Juan", "juan", new Noob());
 		assertEquals(usuario.getJogos().size(), 0);
 		assertEquals(usuario.getLogin(), "juan");
 		assertEquals(usuario.getNome(), "Juan");
@@ -167,10 +167,10 @@ public class UsuarioTest {
 	
 	@Test
 	public void testEqualsObject() {
-		Usuario user = new Noob("sa", "juan");
+		Usuario user = new Usuario("sa", "juan", new Noob());
 		assertTrue(usuario.equals(user));
-		assertFalse(usuario.equals(new Veterano("sa", "j")));
-		assertTrue(usuario.equals(new Veterano("sa", "juan")));
+		assertFalse(usuario.equals(new Usuario("sa", "j", new Noob())));
+		assertTrue(usuario.equals(new Usuario("sa", "juan",new Veterano())));
 	}
 	
 	@Test
@@ -181,7 +181,7 @@ public class UsuarioTest {
 				"Lista de Jogos:" +
 		"Total de preco dos jogos: R$ 0,00" + ln +
 		"--------------------------------------------";
-		assertEquals(result,usuario.toString());
+		assertEquals(result, usuario.toString());
 		//Caso não tenha jogos
 		
 		

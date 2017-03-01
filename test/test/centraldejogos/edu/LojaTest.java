@@ -37,11 +37,11 @@ public class LojaTest {
 
 	private void constroeUsuarios() {
 		usuarios = new ArrayList<Usuario>();
-		usuarios.add(new Noob("Juan", "juan"));
-		usuarios.add(new Veterano("Joao", "joao"));
-		usuarios.add(new Noob("Maria", "maria"));
-		usuarios.add(new Noob("Mateus", "mateus"));
-		usuarios.add(new Veterano("Lais", "lais"));
+		usuarios.add(new Usuario("Juan", "juan", new Noob()));
+		usuarios.add(new Usuario("Joao", "joao",new Veterano()));
+		usuarios.add(new Usuario("Maria", "maria", new Noob()));
+		usuarios.add(new Usuario("Mateus", "mateus", new Noob()));
+		usuarios.add(new Usuario("Lais", "lais", new Veterano()));
 	}
 
 	@Before
@@ -162,10 +162,9 @@ public class LojaTest {
 		assertTrue(novo.getNome().equals(usuario.getNome()));
 		assertEquals(novo.getSaldoJogos(), usuario.getSaldoJogos(), 0.001);
 		assertEquals(novo.getX2p(), usuario.getX2p(), 0.001);
-		assertTrue(novo.getClass() == Veterano.class);
+		assertTrue(novo.getStatusUsuario().getClass() == Veterano.class);
 		assertEquals(1, loja.getUsuarios().size());
 		// Testa atributos se batem
-
 		try {
 			loja.upgradeUsuario(novo.getLogin());
 			fail();

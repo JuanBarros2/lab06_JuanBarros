@@ -5,17 +5,7 @@ import centraldejogos.edu.exceptions.JogoNaoEncontradoException;
 import centraldejogos.edu.exceptions.UpgradeInvalidoException;
 import centraldejogos.edu.tipojogo.Jogo;
 
-public class Veterano extends Usuario{
-
-	public Veterano(String nome, String login) {
-		super(nome, login);
-		x2p = 1000;
-	}
-
-	@Override
-	public void upgrade() throws UpgradeInvalidoException {
-		throw new UpgradeInvalidoException();
-	}
+public class Veterano implements TipoDeUsuarioIF {
 
 	@Override
 	public int getDesconto() {
@@ -27,38 +17,41 @@ public class Veterano extends Usuario{
 		return 15;
 	}
 
+
 	@Override
-	public void recompensar(String nomeDoJogo, int score, boolean zerou) throws JogoNaoEncontradoException {
-		for (Jogo jogo : jogos) {
-			if (jogo.getNome().equals(nomeDoJogo)) {
-				x2p += jogo.registraJogada(score, zerou);
-				if (jogo.getEstilos().contains(Jogabilidade.ONLINE)){
-					x2p += 10;
-				}
-				if (jogo.getEstilos().contains(Jogabilidade.COOPERATIVO)){
-					x2p += 20;
-				}
-				return;
-			}
-		}
-		throw new JogoNaoEncontradoException();
+	public boolean upgrade(int x2p) {
+		return false;
 	}
 
 	@Override
-	public void pubir(String nomeJogo, int scoreObtido, boolean zerou) throws JogoNaoEncontradoException {
-		for (Jogo jogo : jogos) {
-			if (jogo.getNome().equals(nomeJogo)) {
-				x2p += jogo.registraJogada(scoreObtido, zerou);
-				if (jogo.getEstilos().contains(Jogabilidade.OFFLINE)) {
-					x2p -= 20;
-				}
-				if (jogo.getEstilos().contains(Jogabilidade.COMPETITIVO)) {
-					x2p -= 20;
-				}
-				return;
-			}
+	public int punir(Jogo jogo, int scoreObtido, boolean zerou) {
+		int x2p = jogo.registraJogada(scoreObtido, zerou);
+		if (jogo.getEstilos().contains(Jogabilidade.OFFLINE)) {
+			x2p -= 20;
 		}
-		throw new JogoNaoEncontradoException();
+		if (jogo.getEstilos().contains(Jogabilidade.COMPETITIVO)) {
+			x2p -= 20;
+		}
+
+		return x2p;
+	}
+
+	@Override
+	public int recompensar(Jogo jogo, int score, boolean zerou) {
+		int x2p = jogo.registraJogada(score, zerou);
+		if (jogo.getEstilos().contains(Jogabilidade.ONLINE)) {
+			x2p += 10;
+		}
+		if (jogo.getEstilos().contains(Jogabilidade.COOPERATIVO)) {
+			x2p += 20;
+		}
+
+		return x2p;
+	}
+	
+	@Override
+	public String toString(){
+		return "Veterano";
 	}
 
 }

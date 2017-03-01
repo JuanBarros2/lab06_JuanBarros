@@ -1,6 +1,6 @@
 package centraldejogos.edu.tipousuario;
 
-public enum TipoUsuario {
+public enum TipoUsuarioEnum {
 	NOOB, VETERANO;
 
 }
